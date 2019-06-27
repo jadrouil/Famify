@@ -3,16 +3,17 @@ package jerm.famify;
 import java.util.List;
 
 public class Famify {
-    private String leaderToken;
-    private List<String> friendsTokens;
+    private String[] users;
+    private ICurator curator;
+    private IPlaylistController playlist;
 
-    public Famify(String head, List<String> friends) {
-        leaderToken = head;
-        friendsTokens = friends;
+    public Famify(String[] friends, ICurator cur, IPlaylistController con) {
+        users = friends;
+        curator = cur;
+        playlist = con;
     }
 
     public void createOrUpdatePlaylist() {
-        System.out.println("Creating Playlist with Token:  " + leaderToken);
-        System.out.println("Selecting Songs From: " + leaderToken + " & Friends: " + friendsTokens.toString());
+        System.out.println("Selecting Songs From Friends: " + users.toString());
     }
 }

@@ -9,7 +9,11 @@ import java.util.Arrays;
 public class App 
 {
     public static void main( String[] args ) {
-        Famify f = new Famify(args[0], Arrays.asList(Arrays.copyOfRange(args, 1, args.length)));
+        Famify f = new Famify(
+                args,
+                new DumbCurator(),
+                new DumbPlaylistController()
+        );
         f.createOrUpdatePlaylist();
     }
 }
