@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DumbCurator implements ICurator {
-    public List<Track> selectTracks(int numTracks, String[] users) {
+    public List<String> selectTracks(int numTracks, String[] users) {
         return new ArrayList<>();
     }
 

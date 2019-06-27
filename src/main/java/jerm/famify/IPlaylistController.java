@@ -10,6 +10,6 @@ public interface IPlaylistController {
 
     void createPlaylist();
 
-    void setPlaylist(List<Track> songs);
+    void setPlaylist(List<String> songs);
 
 }

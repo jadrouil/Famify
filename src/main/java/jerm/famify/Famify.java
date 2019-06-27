@@ -15,5 +15,10 @@ public class Famify {
 
     public void createOrUpdatePlaylist() {
         System.out.println("Selecting Songs From Friends: " + users.toString());
+        final List<String> tracks = curator.selectTracks(20, users);
+        if (!playlist.playlistExists()) {
+            playlist.createPlaylist();
+        }
+        playlist.setPlaylist(tracks);
     }
 }

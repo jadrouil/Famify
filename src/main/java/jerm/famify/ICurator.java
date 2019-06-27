@@ -4,5 +4,5 @@ import java.util.List;
 
 
 public interface ICurator {
-    List<Track> selectTracks(int numTracks, String[] users);
+    List<String> selectTracks(int numTracks, String[] users);
 }

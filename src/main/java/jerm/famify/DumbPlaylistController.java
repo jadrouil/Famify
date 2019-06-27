@@ -13,7 +13,7 @@ public class DumbPlaylistController implements IPlaylistController {
 
     }
 
-    public void setPlaylist(List<Track> songs) {
+    public void setPlaylist(List<String> songs) {
 
     }
 }
