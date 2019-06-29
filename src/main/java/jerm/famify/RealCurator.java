@@ -47,14 +47,8 @@ public class RealCurator implements ICurator{
         while (selections.size() != numTracks) {
             FamTrack select;
 
-
-            if (useHead) {
-                select = crossUserCollection.get(userIndex++).get(head);
-            }
-            else {
-                select = crossUserCollection.get(userIndex++).get(tail);
-            }
-
+            int selectIndex = useHead ? head : tail;
+            select = crossUserCollection.get(userIndex++).get(selectIndex);
             selections.add(select.id);
 
             if (userIndex >= users.length) {
@@ -71,6 +65,4 @@ public class RealCurator implements ICurator{
         }
         return selections;
     }
-
-
 }
