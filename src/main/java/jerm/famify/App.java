@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args ) {
         Famify f = new Famify(
                 args,
-                new DumbCurator(),
+                new RealCurator(new DumbSongRetriever()),
                 new DumbPlaylistController()
         );
         f.createOrUpdatePlaylist();
