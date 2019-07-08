@@ -14,11 +14,11 @@ public class App
 
     public static void main(String[] args ) {
 
-        Famify.PlaylistOp playlist = (u, t) -> {
+        Famify.PlaylistOp playlist = (owner, tracks) -> {
             // No-op for now.
         };
 
-        Famify.UserTrackLookup user = (u, n) -> {
+        Famify.UserTrackLookup user = (userKey, num) -> {
             List<String> tracks = new ArrayList<>(Arrays.asList());
             return tracks;
         };
