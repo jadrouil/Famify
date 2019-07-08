@@ -2,6 +2,8 @@ package jerm.famify;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -10,23 +12,14 @@ import static org.mockito.Mockito.*;
 
 public class FamifyTest {
 
-    private ICurator mockCurator;
-    private IPlaylistController mockPlaylist;
+    private Famify.PlaylistOp mockPlaylist;
+    private Famify.UserTrackLookup mockLookup;
     private static final String[] userKeys = {"papa-bear", "Idea-guy", "bchen", "karebear"};
     private List<String> tracks;
     private Famify undertest;
 
     @Before
     public void setup() {
-        mockCurator = mock(ICurator.class);
-        mockPlaylist = mock(IPlaylistController.class);
-        tracks = new ArrayList<>();
-        tracks.add("Track-1");
-        tracks.add("Track-2");
-
-        undertest = new Famify(userKeys, mockCurator, mockPlaylist);
-        // For now we will hard code 20 tracks, but I suppose that could be parameterized.
-        when(mockCurator.selectTracks(20, userKeys)).thenReturn(tracks);
 
     }
 
@@ -35,26 +28,61 @@ public class FamifyTest {
 
     }
 
-    @Test
-    public void FamifyGetsCurated20TracksAndUpdatesPlaylistWhenItExists() {
-        when(mockPlaylist.playlistExists()).thenReturn(true);
+    private List<String> makeSortedSongList(int size, String name) {
+        List<String> tracks = new ArrayList<>();
+        for (int i = size -1 ; i>=0; --i) {
+            tracks.add(name + i);
+        }
 
-        undertest.createOrUpdatePlaylist();
-
-        verify(mockCurator).selectTracks(20, userKeys);
-        verify(mockPlaylist).playlistExists();
-        verify(mockPlaylist).setPlaylist(tracks);
+        return tracks;
     }
 
     @Test
-    public void FamifyGetsCurated20TracksAndCreatesPlaylistIfItDoesntExist() {
-        when(mockPlaylist.playlistExists()).thenReturn(false);
+    public void FamifyGets20MixedPopularityTracksAndCreatesPlaylist() {
+        mockLookup = mock(Famify.UserTrackLookup.class);
+        mockPlaylist = mock(Famify.PlaylistOp.class);
+
+        when(mockLookup.getTracks("papa-bear", 10))
+                .thenReturn(makeSortedSongList(10, "pb"));
+        when(mockLookup.getTracks("Idea-guy", 10))
+                .thenReturn(makeSortedSongList(10, "ig"));
+        when(mockLookup.getTracks("bchen", 10))
+                .thenReturn(makeSortedSongList(10, "bc"));
+        when(mockLookup.getTracks("karebear", 10))
+                .thenReturn(makeSortedSongList(10, "kb"));
+
+        undertest = new Famify(userKeys, mockPlaylist, mockLookup);
 
         undertest.createOrUpdatePlaylist();
 
-        verify(mockCurator).selectTracks(20, userKeys);
-        verify(mockPlaylist).playlistExists();
-        verify(mockPlaylist).createPlaylist();
-        verify(mockPlaylist).setPlaylist(tracks);
+        verify(mockLookup).getTracks("papa-bear", 10);
+        verify(mockLookup).getTracks("Idea-guy", 10);
+        verify(mockLookup).getTracks("bchen", 10);
+        verify(mockLookup).getTracks("karebear", 10);
+        verify(mockPlaylist).create("papa-bear", new ArrayList<>(
+                Arrays.asList(
+                        "pb9",
+                        "ig9",
+                        "bc9",
+                        "kb9",
+                        "pb0",
+                        "ig0",
+                        "bc0",
+                        "kb0",
+                        "pb8",
+                        "ig8",
+                        "bc8",
+                        "kb8",
+                        "pb1",
+                        "ig1",
+                        "bc1",
+                        "kb1",
+                        "pb7",
+                        "ig7",
+                        "bc7",
+                        "kb7"
+                )
+        ));
     }
+
 }
