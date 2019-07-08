@@ -31,6 +31,7 @@ public class Famify {
         boolean useHead = true;
         int userIndex = 0;
 
+        // We assume that the most popular songs are at the front of each list.
         while (selections.size() != playlistSize) {
             String select;
 
